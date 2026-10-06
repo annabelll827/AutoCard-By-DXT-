@@ -2,9 +2,13 @@ import random
 import string
 import os
 import telebot
+from dotenv import load_dotenv
 
-# تۆکنی بۆتەکەی خۆت لێرە جێگیر کراوە
-TOKEN = "8862179359:AAHIh-MN0Won7hsVOS4xMNpPFfmEbwlAxfw"
+# بارکردنی فایلی .env
+load_dotenv()
+
+# خوێندنەوەی تۆکن لە فایلی .envەوە بە سەلامەتی
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = telebot.TeleBot(TOKEN)
 
 FILENAME = "mixed_scratch_codes.txt"
@@ -31,8 +35,6 @@ def generate_mixed_card_code():
 @bot.message_handler(commands=['start', 'code'])
 def send_code(message):
     new_code = generate_mixed_card_code()
-    
-    # فۆرماتی داواکراو بۆ پەیوەندیکردن
     ussd_code = f"*221*{new_code}#"
     
     response_text = (
@@ -44,5 +46,5 @@ def send_code(message):
     bot.reply_to(message, response_text, parse_mode="Markdown")
 
 if __name__ == "__main__":
-    print("بۆتەکە ئێستا کار دەکات و ئامادەیە...")
+    print("بۆتەکە بە سەلامەتی کار دەکات...")
     bot.polling()
